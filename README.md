@@ -37,7 +37,7 @@ up:boolean
 
 
 Migrations: Links, devise, AddUserToLinks, AddLinksToVotes
-Associations: User has_many :links, Links belongs_to :user, Votes belongs_to :link, Links has_many: Votes
+Associations: User has_many :links, Links belongs_to :user, Votes belongs_to :link, Links has_many :votes
 Controllers:
 Vote validation
 validates :user_id, :uniqueness => { :scope => :link_id }
