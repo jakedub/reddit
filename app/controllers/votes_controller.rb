@@ -11,6 +11,8 @@ class VotesController < ApplicationController
   # GET /votes/1
   # GET /votes/1.json
   def show
+    @votes = Vote.find(params[:id])
+    @votes.increment! :click_count
   end
 
   # GET /votes/new
@@ -20,23 +22,32 @@ class VotesController < ApplicationController
 
   # GET /votes/1/edit
   def edit
+    @votes = Vote.find(params[:id])
   end
 
   # POST /votes
   # POST /votes.json
+
   def create
     @vote = Vote.new(vote_params)
-
-    respond_to do |format|
-      if @vote.save
-        format.html { redirect_to @vote, notice: 'Vote was successfully created.' }
-        format.json { render :show, status: :created, location: @vote }
-      else
-        format.html { render :new }
-        format.json { render json: @vote.errors, status: :unprocessable_entity }
-      end
-    end
+    @vote.user = current_user
+    @vote = current_user.votes.create(params[:vote])
+    redirect_to 'back'
   end
+  # def create
+  #   @vote = Vote.new(vote_params)
+  #   @vote.current_user.votes
+  #   @vote.link
+  #   respond_to do |format|
+  #     if @vote.save
+  #       format.html { redirect_to @vote, notice: 'Vote was successfully created.' }
+  #       format.json { render :show, status: :created, location: @vote }
+  #     else
+  #       format.html { render :new }
+  #       format.json { render json: @vote.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
   # PATCH/PUT /votes/1
   # PATCH/PUT /votes/1.json
@@ -70,6 +81,6 @@ class VotesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def vote_params
-      params.require(:vote).permit(:up)
+      params.require(:vote).permit(:up, :like_id, :user_id, :vote)
     end
 end
