@@ -26,6 +26,7 @@ class LinksController < ApplicationController
   # POST /links.json
   def create
     @link = Link.new(link_params)
+    @link = current_user.links.build(link_params)
 
     respond_to do |format|
       if @link.save
@@ -37,6 +38,7 @@ class LinksController < ApplicationController
       end
     end
   end
+
 
   # PATCH/PUT /links/1
   # PATCH/PUT /links/1.json
@@ -61,6 +63,18 @@ class LinksController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # def upvote
+  #   @link = Link.find(params[:id])
+  #   @link.upvote_by current_user
+  #   redirect_to :back
+  # end
+  #
+  # def downvote
+  #   @link = Link.find(params[:id])
+  #   @link.downvote_from current_user
+  #   redirect_to :back
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.

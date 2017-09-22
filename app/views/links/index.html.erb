@@ -14,7 +14,7 @@
   <tbody>
     <% @links.each do |link| %>
       <tr>
-        <td><%= link_to link.url, "#{link.url}" %></td>
+        <td><%= link_to link.url, "http://#{link.url}" %></td>
         <td><%= link.title %></td>
         <td><%= link_to 'Show', link %></td>
         <td><%= link_to 'Edit', edit_link_path(link) %></td>
