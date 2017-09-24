@@ -26,8 +26,13 @@ class LinksController < ApplicationController
   # POST /links.json
   def create
     @link = Link.new(link_params)
-    @link = current_user.links.build(link_params)
-
+    @link.user = current_user
+    @link.vote_count = @link.votes.count
+      if @link.save
+        redirect_to @link
+      else
+        render :new
+      end
     respond_to do |format|
       if @link.save
         format.html { redirect_to @link, notice: 'Link was successfully created.' }
@@ -39,19 +44,38 @@ class LinksController < ApplicationController
     end
   end
 
+  def vote
+    if current_user
+      @link.votes << Vote.create!(user_id: @link.user_id, link_id: @link.id)
+      @link.vote_count = @link.votes.count
+      @link.save
+      redirect_to :root
+    else
+      redirect_to :login
+    end
+  end
+
+  def link_vote
+    @link.votes << Vote.create!(user_id: @link.user_id, link_id: @link.id)
+    @link.vote_count = @link.vote.count
+    @link.save
+    redirect_to @link.link
+  end
+
+  def down_vote
+    @link.votes.last.destroy
+    @link.vote_count = @link.votes.count
+    @link.save
+    redirect_to :root
+  end
+
 
   # PATCH/PUT /links/1
   # PATCH/PUT /links/1.json
   def update
-    respond_to do |format|
-      if @link.update(link_params)
-        format.html { redirect_to @link, notice: 'Link was successfully updated.' }
-        format.json { render :show, status: :ok, location: @link }
-      else
-        format.html { render :edit }
-        format.json { render json: @link.errors, status: :unprocessable_entity }
-      end
-    end
+    @link.update(link_params)
+    @link.save
+    redirect_to :root
   end
 
   # DELETE /links/1
