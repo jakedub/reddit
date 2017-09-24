@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
         sessions: 'users/sessions'
       }
+  resources :votes
+  root 'links#index'
   resources :links do
     get :vote
     get :link_vote

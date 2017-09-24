@@ -27,7 +27,7 @@ class LinksController < ApplicationController
   def create
     @link = Link.new(link_params)
     @link.user = current_user
-    @link.vote_count = @link.votes.count
+    @link.totalcount = @link.votes.count
       if @link.save
         redirect_to @link
       else
@@ -46,8 +46,8 @@ class LinksController < ApplicationController
 
   def vote
     if current_user
-      @link.votes << Vote.create!(user_id: @link.user_id, link_id: @link.id)
-      @link.vote_count = @link.votes.count
+      @link.vote << Vote.create!(user_id: @link.user_id, link_id: @link.id)
+      @link.totalcount = @link.votes.count
       @link.save
       redirect_to :root
     else
@@ -57,14 +57,14 @@ class LinksController < ApplicationController
 
   def link_vote
     @link.votes << Vote.create!(user_id: @link.user_id, link_id: @link.id)
-    @link.vote_count = @link.vote.count
+    @link.totalcount = @link.votes.count
     @link.save
-    redirect_to @link.link
+    redirect_to :root
   end
 
   def down_vote
     @link.votes.last.destroy
-    @link.vote_count = @link.votes.count
+    @link.totalcount = @link.votes.count
     @link.save
     redirect_to :root
   end
@@ -87,18 +87,6 @@ class LinksController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-  # def upvote
-  #   @link = Link.find(params[:id])
-  #   @link.upvote_by current_user
-  #   redirect_to :back
-  # end
-  #
-  # def downvote
-  #   @link = Link.find(params[:id])
-  #   @link.downvote_from current_user
-  #   redirect_to :back
-  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.
