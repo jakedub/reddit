@@ -1,4 +1,5 @@
 class Link < ApplicationRecord
+  paginates_per 15
   has_many :votes
   belongs_to :user
   validates :title, presence:true

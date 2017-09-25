@@ -1,14 +1,15 @@
-<p id="notice"><%= notice %></p>
-
+<div class = "container">
+  <h1 class="jumbotron">Behold! Your Link</h1>
 <p>
-  <strong>Url:</strong>
-  <%= @links.url %>
+  <h2><strong>Url:</strong></h2>
+  <h3><%= @links.url %></h3>
+</p>
+<br />
+<p>
+  <h2><strong>Title:</strong></h2>
+  <h3><%= @links.title %></h3>
 </p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @links.title %>
-</p>
-
-<%= link_to 'Edit', edit_link_path(@links) %> |
-<%= link_to 'Back', links_path %>
+<%= link_to 'Edit', edit_link_path(@links), :class => "btn btn-default" %>
+<%= link_to 'Back', links_path, :class => "btn btn-default" %>
+</div>
