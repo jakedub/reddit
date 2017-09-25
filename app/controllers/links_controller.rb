@@ -5,7 +5,7 @@ class LinksController < ApplicationController
   # GET /links
   # GET /links.json
   def index
-    @links = Link.all
+    @links = Link.order(totalcount: :DESC)
   end
 
   # GET /links/1
@@ -40,7 +40,7 @@ class LinksController < ApplicationController
   def vote
     @link = Link.find(params[:link_id])
     @link.votes << Vote.create!(user_id: @link.user_id, link_id: @link.id)
-    @link.totalcount = @link.votes.count
+    @link.totalcount += 1
     @link.save
     redirect_to :root
   end
@@ -49,11 +49,18 @@ class LinksController < ApplicationController
   def down_vote
     @link = Link.find(params[:link_id])
     @link.votes.last.destroy
-    @link.totalcount = @link.votes.count
+    @link.totalcount -= 1
     @link.save
     redirect_to :root
   end
 
+  def link_vote
+    @link = Link.find(params[:link_id])
+    @link.votes << Vote.create!(user_id: @link.user_id, link_id: @link.id)
+    @link.totalcount = @link.votes.count
+    @link.save
+    redirect_to @link.link
+  end
 
   # PATCH/PUT /links/1
   # PATCH/PUT /links/1.json

@@ -1,6 +1,8 @@
 # Reddit
 Normal mode is a simple, naive, implementation of Reddit
 
+Link clicked triggers positive
+
 # Explorer Mode
 * Reddit is "User-generated news links. Votes promote stories to the front page."
 * Each Link should have many Votes associated with it.
