@@ -45,15 +45,11 @@ class LinksController < ApplicationController
     redirect_to :root
   end
 
-  def link_vote
-    @links.totalcount = @links.votes.count
-    @links.save
-    redirect_to :root
-  end
 
   def down_vote
     @link = Link.find(params[:link_id])
-    @link.totalcount = @link.votes.last.destroy
+    @link.votes.last.destroy
+    @link.totalcount = @link.votes.count
     @link.save
     redirect_to :root
   end
